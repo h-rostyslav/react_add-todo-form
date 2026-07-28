@@ -14,18 +14,26 @@ export const App = () => {
   const [errorTitleField, setErrorTitleField] = useState('');
   const [userIdErrorField, setUserIdErrorField] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    let hasError = false;
 
     if (!title.trim()) {
       setErrorTitleField('Please enter a title');
-
-      return;
+      hasError = true;
+    } else {
+      setErrorTitleField('');
     }
 
     if (userId === 0) {
       setUserIdErrorField('Please choose a user');
+      hasError = true;
+    } else {
+      setUserIdErrorField('');
+    }
 
+    if (hasError) {
       return;
     }
 
@@ -53,10 +61,11 @@ export const App = () => {
           {' '}
           Title:
           <input
+            placeholder='Enter a title'
             type="text"
             value={title}
-            onChange={e => {
-              setTitle(e.target.value);
+            onChange={event => {
+              setTitle(event.target.value);
               setErrorTitleField('');
             }}
             data-cy="titleInput"
@@ -69,8 +78,8 @@ export const App = () => {
         <div className="field">
           User:
           <select
-            onChange={e => {
-              setUserId(+e.target.value);
+            onChange={event => {
+              setUserId(+event.target.value);
               setUserIdErrorField('');
             }}
             value={userId}
